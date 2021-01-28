@@ -5,8 +5,14 @@ const User = require('./../models/user');
 
 const router = new express.Router();
 
+
+
 router.get('/sign-up', (req, res, next) => {
   res.render('sign-up');
+});
+
+router.get('/profile', (req, res, next) => {
+  res.render('profile');
 });
 
 router.post('/sign-up', (req, res, next) => {
@@ -25,16 +31,17 @@ router.post('/sign-up', (req, res, next) => {
   .then(passwordHashAndSalt => {
     return User.create({
       username: data.username,
-      passwordHashAndSalt: data.passwordHashAndSalt
+      passwordHashAndSalt: passwordHashAndSalt
     });
   })
   .then(user => {
-    req.session.userId = user._id;
-    res.redirect('/profile');
+    //req.session.userId = user._id;
+    res.redirect('/authentication/profile');
   })
   .catch(error => {
     next(error);
   });
 });
+
 
 module.exports = router;
